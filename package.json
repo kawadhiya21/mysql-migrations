@@ -1,0 +1,30 @@
+{
+  "name": "mysql-migrations",
+  "version": "1.0.0",
+  "description": "A tool to use with mysql package to maintain migrations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawadhiya21/mysql-migrations.git"
+  },
+  "keywords": [
+    "node",
+    "mysql",
+    "migrations",
+    "table",
+    "management"
+  ],
+  "author": "Kshitij Awadhiya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kawadhiya21/mysql-migrations/issues"
+  },
+  "homepage": "https://github.com/kawadhiya21/mysql-migrations#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "mysql": "^2.13.0"
+  }
+}
