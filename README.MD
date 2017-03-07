@@ -52,3 +52,10 @@ There are few ways to run migrations.
 
 ## Help and Support
 Will be more than happy to improve upon this version. This is an over night build and needs to be improved certainly. Will welcome everyone who wants to contribute.
+
+## Credits and other stuff
+It is my first contribution to npm and I am sort of happy over it. I made this when I was really looking for a suitable tool with barebone settings allowing me to maintain database structure. I could not find a basic one and hence wrote my own and finally decided to publish. It took me around 2 hours to write the first version which barely works. But it still does my job.
+
+**I will give credits to [ramnique](https://github.com/ramnique/) (I worked with him at Stayzilla and he is a great mentor). He himself has written an abstract framework https://github.com/ramnique/migrashun.
+
+**And of course to my parents and gtka.
