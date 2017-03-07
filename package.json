@@ -1,6 +1,6 @@
 {
   "name": "mysql-migrations",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tool to use with mysql package to maintain migrations",
   "main": "index.js",
   "scripts": {
