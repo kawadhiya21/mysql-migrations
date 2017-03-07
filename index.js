@@ -154,6 +154,7 @@ function handle(argv, conn, path) {
   if (argv.length > 2 && argv.length <= 6) {
     if (argv[2] == 'add' && argv[3] == 'migration') {
       add_migration(argv, path);
+      conn.end();
     }
 
     if (argv[2] == 'up') {
