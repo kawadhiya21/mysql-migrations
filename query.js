@@ -1,4 +1,5 @@
 var table = require('./config')['table'];
+var fileFunctions  = require('./file');
 
 function run_query(conn, query, cb) {
   conn.getConnection(function(err, connection) {

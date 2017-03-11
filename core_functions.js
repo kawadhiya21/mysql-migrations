@@ -1,6 +1,8 @@
+var fs = require("fs");
+
 var fileFunctions  = require('./file');
 var queryFunctions = require('./query');
-var table = rquire('./config')['table'];
+var table = require('./config')['table'];
 
 function add_migration(argv, path, cb) {
   fileFunctions.validate_file_name(argv[4]);

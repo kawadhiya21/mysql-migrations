@@ -1,3 +1,5 @@
+var fs = require("fs");
+
 function validate_file_name(file_name) {
   var patt = /^[0-9a-zA-Z-_]+$/;
   if (!patt.test(file_name)) {

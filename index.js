@@ -1,8 +1,9 @@
 var fs = require("fs");
 
 var coreFunctions  = require('./core_functions');
+var queryFunctions  = require('./query');
 
-var table = rquire('./config')['table'];
+var table = require('./config')['table'];
 
 function migration(conn, path) {
   queryFunctions.run_query(conn, "CREATE TABLE IF NOT EXISTS `" + table + "` (`timestamp` varchar(254) NOT NULL UNIQUE)", function (res) {
