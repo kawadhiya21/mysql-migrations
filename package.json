@@ -25,6 +25,8 @@
   "homepage": "https://github.com/kawadhiya21/mysql-migrations#readme",
   "dependencies": {},
   "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
     "mysql": "^2.13.0"
   }
 }
