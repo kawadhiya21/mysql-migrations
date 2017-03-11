@@ -1,4 +1,4 @@
-var table = rquire('./config')['table'];
+var table = require('./config')['table'];
 
 function run_query(conn, query, cb) {
   conn.getConnection(function(err, connection) {
@@ -51,7 +51,7 @@ function updateRecords(conn, type, table, timestamp_val, cb) {
     query = "DELETE FROM " + table + " WHERE `timestamp` = '" + timestamp_val + "'"
   }
 
-  queryFunctions.run_query(conn, query, function (res) {
+  run_query(conn, query, function (res) {
     cb();
   });
 }
