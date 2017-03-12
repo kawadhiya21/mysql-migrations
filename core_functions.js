@@ -25,6 +25,7 @@ function add_migration(argv, path, cb) {
         throw err;
       }
 
+      console.log("Added file " + file_name);
       cb();
     });
   });
