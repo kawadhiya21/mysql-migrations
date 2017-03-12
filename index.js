@@ -13,7 +13,7 @@ function migration(conn, path) {
 
 function handle(argv, conn, path) {
   if (argv.length > 2 && argv.length <= 6) {
-    if (argv[2] == 'add' && argv[3] == 'migration') {
+    if (argv[2] == 'add' && (argv[3] == 'migration' && argv[3] == 'seed')) {
       coreFunctions.add_migration(argv, path, function () {
         conn.end();
       });

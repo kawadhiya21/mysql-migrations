@@ -8,7 +8,7 @@ function add_migration(argv, path, cb) {
   fileFunctions.validate_file_name(argv[4]);
   fileFunctions.readFolder(path, function (files) {
     var file_name = Date.now() + "_" + argv[4];
-    var file_path = path + '/' + file_name;
+    var file_path = path + '/' + file_name + '.js';
 
     var sql_json = {
       up   : '',
@@ -19,7 +19,8 @@ function add_migration(argv, path, cb) {
       sql_json['up'] = argv[5];
     }
 
-    fs.writeFile(file_path, JSON.stringify(sql_json, null, 4), 'utf-8', function (err) {
+    var content = 'module.exports = ' + JSON.stringify(sql_json, null, 4);
+    fs.writeFile(file_path, content, 'utf-8', function (err) {
       if (err) {
         throw err;
       }

@@ -31,7 +31,6 @@ module.exports = function(cb) {
             connection.query("DROP TABLE IF EXISTS user5", function (error) {
               if (error) throw error;
               deleteFolderRecursive(__dirname + '/migrations');
-              deleteFolderRecursive(__dirname + '/migrations/seed');
               cb();
             });
           });

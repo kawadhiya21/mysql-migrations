@@ -8,7 +8,6 @@ var assert = require('assert');
 var should = chai.should();
 
 describe('query.js', function() {
-  console.log();
   before(function (done) {
     testCommons(done);
   });
