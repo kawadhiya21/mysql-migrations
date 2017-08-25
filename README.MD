@@ -18,8 +18,8 @@ npm install mysql-migrations
 ```
 
 ## Setup
-1. Create a directory where you wish to maintain all your migrations.
-2. Instantiate mysql-migrations by passing a mysql pool. Also mention the migrations directory.
+1. Create a directory where you wish to maintain all your migrations. We call it `migrations`.
+2. Instantiate mysql-migrations by passing a mysql pool and the migrations directory path.
 
 ```
 # migration.js
