@@ -45,9 +45,10 @@ function execute_query(conn, path, final_file_paths, type, cb) {
 
 function updateRecords(conn, type, table, file_name, cb) {
   var query = '';
-  var timestamp_val = file_name.split("_", 1)[0];
-  var migration = file_name.split("_", 1)[1];
 
+  var timestamp_val = file_name.substr(0,file_name.indexOf('_'));
+  var migration = file_name.substr(file_name.indexOf('_')+1);
+  
   if (type == 'up') {
     query = "INSERT INTO " + table + " (`timestamp`, `migration`) VALUES ('" + timestamp_val + "','" + migration + "')";
   } else if (type == 'down') {
