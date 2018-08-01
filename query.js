@@ -49,7 +49,7 @@ function updateRecords(conn, type, table, file_name, cb) {
   var migration = file_name.split("_", 1)[1];
 
   if (type == 'up') {
-    query = "INSERT INTO " + table + " (`timestamp`) VALUES ('" + timestamp_val + "','" + migration + "')";
+    query = "INSERT INTO " + table + " (`timestamp`, `migration`) VALUES ('" + timestamp_val + "','" + migration + "')";
   } else if (type == 'down') {
     query = "DELETE FROM " + table + " WHERE `timestamp` = '" + timestamp_val + "'"
   }
