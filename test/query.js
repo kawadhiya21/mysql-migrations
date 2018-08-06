@@ -14,15 +14,16 @@ describe('query.js', function() {
 
   context('updateRecords', function () {
     var timestamp = Date.now();
+    var file_name = timestamp + '_create_user2'
     var table = 'user1';
     it('should insert into table when up', function (done) {
       mysql.getConnection(function (err, connection) {
-        connection.query('CREATE TABLE `'+table+'` (timestamp VARCHAR(255))', function (error, results) {
+        connection.query('CREATE TABLE `'+table+'` (timestamp VARCHAR(255), migration VARCHAR(255) )', function (error, results) {
           if (error) {
             throw error;
           }
 
-          queryFunctions.updateRecords(mysql, 'up', table, timestamp, function () {
+          queryFunctions.updateRecords(mysql, 'up', table, file_name, function () {
             connection.query('SELECT * FROM `'+table+'` WHERE timestamp="'+timestamp+'"', function(err, res) {
               if (err) {
                 throw err;
@@ -37,7 +38,7 @@ describe('query.js', function() {
     });
 
     it('should delete from table when down', function (done) {
-      queryFunctions.updateRecords(mysql, 'down', table, timestamp, function () {
+      queryFunctions.updateRecords(mysql, 'down', table, file_name, function () {
         mysql.getConnection(function (err, connection) {
           connection.query('SELECT * FROM `'+table+'` WHERE timestamp="'+timestamp+'"', function(err, res) {
             if (err) {
