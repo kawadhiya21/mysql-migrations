@@ -82,6 +82,27 @@ function down_migrations(conn, max_count, path, cb) {
   });
 }
 
+function extractTimeStampFromFileName(file_path) {
+  // file path example "3213123213_filename.sql"
+  return file_path.split("_", 1).shift();
+}
+
+function complete_migrations(conn, path, cb) {
+  const query = `SELECT CONCAT(timestamp, '_', migration) AS \`migration\` FROM ${table} ORDER BY timestamp ASC`;
+
+  return queryFunctions
+      .run_query(conn, query, function (results) {
+          const migrations = results.map((el) => el.migration);
+
+          fileFunctions.readFolder(path, function (files) {
+            files = files
+                .filter((el) => migrations.indexOf(el) < 0)
+                .map((file_path) => ({timestamp: extractTimeStampFromFileName(file_path), file_path}))
+                .sort((a, b) => (a.timestamp - b.timestamp));
+            queryFunctions.execute_query(conn, path, files, 'up', cb);
+      });
+  });
+}
 function run_migration_directly(file, type, conn, path, cb) {
   var current_file_path = path + "/" + file;
   var query = require(current_file_path)[type];
@@ -92,5 +113,6 @@ module.exports = {
   add_migration: add_migration,
   up_migrations: up_migrations,
   down_migrations: down_migrations,
+  complete_migrations: complete_migrations,
   run_migration_directly: run_migration_directly
 };

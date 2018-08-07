@@ -87,6 +87,7 @@ There are few ways to run migrations.
 2. Run `node migration.js up 2`. Runs 2 pending `up` migrations from the last position.
 3. Run `node migration.js down`. Runs only 1 `down` migrations.
 4. Run `node migration.js refresh`. Runs all down migrations followed by all up.
+5. Run `node migration.js complete`. Runs all not applied migrations.
 
 ### Execute anonymous migrations
 At times, few migrations need to run again or anonymously. There could be variety of reasons old migrations need to be executed or rollbacked. It can be done this way.
@@ -105,10 +106,3 @@ node migration.js run 1500891087394_create_table_users.js down
 
 ## Help and Support
 Will be more than happy to improve upon this version. This is an over night build and needs to be improved certainly. Will welcome everyone who wants to contribute.
-
-## Credits and other stuff
-It is my first contribution to npm and I am sort of happy over it. I made this when I was really looking for a suitable tool with barebone settings allowing me to maintain database structure. I could not find a basic one and hence wrote my own and finally decided to publish. It took me around 2 hours to write the first version which barely works. But it still does my job.
-
->>Credits to [ramnique](https://github.com/ramnique/) (I worked with him at Stayzilla and he is a great mentor).
-
->>And of course to my parents.
