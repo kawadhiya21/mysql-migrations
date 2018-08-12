@@ -11,7 +11,7 @@ function migration(conn, path, cb) {
   if(cb == null)
     cb = () => {};
 
-  queryFunctions.run_query(conn, "CREATE TABLE IF NOT EXISTS `" + table + "` (`timestamp` varchar(254) NOT NULL UNIQUE)", function (res) {
+  queryFunctions.run_query(conn, "CREATE TABLE IF NOT EXISTS `" + table + "` (`timestamp` varchar(64) NOT NULL UNIQUE)", function (res) {
     handle(process.argv, conn, path, cb);
   });
 }
