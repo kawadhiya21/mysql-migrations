@@ -103,10 +103,10 @@ function complete_migrations(conn, path, cb) {
       });
   });
 }
-function run_migration_directly(file, type, conn, path, cb) {
-  var current_file_path = path + "/" + file;
-  var query = require(current_file_path)[type];
-  queryFunctions.run_query(conn, query, cb);
+
+function run_migration_directly(file_path, type, conn, path, cb) {
+  var final_file_paths = [{timestamp: extractTimeStampFromFileName(file_path), file_path}];
+  queryFunctions.execute_query(conn, path, final_file_paths, type, cb);
 }
 
 module.exports = {
