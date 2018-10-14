@@ -60,6 +60,11 @@ function handle(argv, conn, path, cb) {
         conn.end();
         cb();
       });
+    } else if (argv[2] == 'test') {
+      coreFunctions.test_migrations(conn, path, function () {
+        conn.end();
+        cb();
+      });
     } else {
       throw new Error('command not found : ' + argv.join(" "));
     }

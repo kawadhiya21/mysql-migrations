@@ -104,6 +104,29 @@ function complete_migrations(conn, path, cb) {
   });
 }
 
+function test_migrations(conn, path, cb) {
+  const query = `SELECT CONCAT(timestamp, '_', migration) AS \`migration\` FROM ${table} ORDER BY timestamp ASC`;
+
+  return queryFunctions
+      .run_query(conn, query, function (results) {
+          const migrations = results.map((el) => el.migration);
+
+          fileFunctions.readFolder(path, function (files) {
+              files = files
+                .filter((el) => migrations.indexOf(el) < 0)
+                .map((file_path) => ({timestamp: extractTimeStampFromFileName(file_path), file_path}))
+                .sort((a, b) => (a.timestamp - b.timestamp));
+              if (files.length > 0 ) {
+                  console.log('Migrations ready to run:');
+                  files.map((file) => console.log(file.file_path));
+              } else {
+                  console.log('All migratoins applied. Nothing to do here!');
+              }
+              process.exit(0);
+      });
+  });
+}
+
 function run_migration_directly(file_path, type, conn, path, cb) {
   var final_file_paths = [{timestamp: extractTimeStampFromFileName(file_path), file_path}];
   queryFunctions.execute_query(conn, path, final_file_paths, type, cb);
@@ -114,5 +137,6 @@ module.exports = {
   up_migrations: up_migrations,
   down_migrations: down_migrations,
   complete_migrations: complete_migrations,
+  test_migrations: test_migrations,
   run_migration_directly: run_migration_directly
 };

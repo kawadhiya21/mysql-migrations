@@ -87,7 +87,8 @@ There are few ways to run migrations.
 2. Run `node migration.js up 2`. Runs 2 pending `up` migrations from the last position.
 3. Run `node migration.js down`. Runs only 1 `down` migrations.
 4. Run `node migration.js refresh`. Runs all down migrations followed by all up.
-5. Run `node migration.js complete`. Runs all not applied migrations.
+5. Run `node migration.js test`. Show all not applied migrations.
+6. Run `node migration.js complete`. Runs all not applied migrations.
 
 ### Execute anonymous migrations
 At times, few migrations need to run again or anonymously. There could be variety of reasons old migrations need to be executed or rollbacked. It can be done this way.
