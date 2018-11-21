@@ -24,7 +24,7 @@ npm install mysql-migrations
 ```
 # migration.js
 var mysql = require('mysql');
-var migration = require('mysql-migration');
+var migration = require('mysql-migrations');
 
 var connection = mysql.createPool({
   connectionLimit : 10,
