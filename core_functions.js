@@ -32,27 +32,43 @@ function add_migration(argv, path, cb) {
 }
 
 function up_migrations(conn, max_count, path, cb) {
-  queryFunctions.run_query(conn, "SELECT timestamp FROM " + table + " ORDER BY timestamp DESC LIMIT 1", function (results) {
-    var file_paths = [];
-    var max_timestamp = 0;
-    if (results.length) {
-      max_timestamp = results[0].timestamp;
+  fileFunctions.readFolder(path, function (files) {
+    var file_paths = {};
+    var timestamps = [];
+    files.forEach(function(file) {
+      var timestamp_split = file.split("_", 1);
+      if (timestamp_split.length) {
+        var timestamp = timestamp_split[0];
+        timestamps.push(timestamp);
+        file_paths[timestamp] = {
+          file_path: file,
+          timestamp: parseInt(timestamp)
+        };
+      } else {
+        throw new Error('Invalid file ' + file);
+      }
+    });
+
+    if (!timestamps.length) {
+      console.log('No files for migrations.');
+      return cb();
     }
 
-    fileFunctions.readFolder(path, function (files) {
-      files.forEach(function (file) {
-        var timestamp_split = file.split("_", 1);
-        if (timestamp_split.length) {
-          var timestamp = parseInt(timestamp_split[0]);
-          if (Number.isInteger(timestamp) && timestamp.toString().length == 13 && timestamp > max_timestamp) {
-            file_paths.push({ timestamp : timestamp, file_path : file});
-          }
-        } else {
-          throw new Error('Invalid file ' + file);
-        }
-      });
+    timestamps = timestamps.join(',');
+    var query = "SELECT timestamp FROM " + table + " WHERE timestamp IN (" + timestamps + ") ORDER BY timestamp DESC";
 
-      var final_file_paths = file_paths.sort(function(a, b) { return (a.timestamp - b.timestamp)}).slice(0, max_count);
+    queryFunctions.run_query(conn, query, function (results) {
+      if (results.length) {
+        results.forEach(function(result) {
+          delete file_paths[result.timestamp];
+        });
+      }
+
+      var final_file_paths = [];
+      for (var timestamp in file_paths) {
+        final_file_paths.push(file_paths[timestamp]);
+      }
+      final_file_paths = final_file_paths.sort(function(a, b) { return (a.timestamp - b.timestamp)}).slice(0, max_count);
       queryFunctions.execute_query(conn, path, final_file_paths, 'up', cb);
     });
   });
