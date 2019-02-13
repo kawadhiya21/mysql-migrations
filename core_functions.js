@@ -77,7 +77,6 @@ function up_migrations(conn, max_count, path, cb) {
 function down_migrations(conn, max_count, path, cb) {
   queryFunctions.run_query(conn, "SELECT timestamp FROM " + table + " ORDER BY timestamp DESC LIMIT " + max_count, function (results) {
     var file_paths = [];
-    var max_timestamp = 0;
     if (results.length) {
       var temp_timestamps = results.map(function(ele) {
         return ele.timestamp;
@@ -92,7 +91,10 @@ function down_migrations(conn, max_count, path, cb) {
         });
 
         var final_file_paths = file_paths.sort(function(a, b) { return (b.timestamp - a.timestamp)}).slice(0, max_count);
-        queryFunctions.execute_query(conn, path, final_file_paths, 'down', cb);
+        queryFunctions.execute_query(conn, path, final_file_paths, 'down', function() {
+          // Delete timestamps from table for ability run migrations with these timestamps in the future
+          queryFunctions.run_query(conn, "DELETE FROM " + table + " WHERE timestamp IN (" + temp_timestamps.join(',') + ")", cb);
+        });
       });
     }
   });
@@ -101,7 +103,16 @@ function down_migrations(conn, max_count, path, cb) {
 function run_migration_directly(file, type, conn, path, cb) {
   var current_file_path = path + "/" + file;
   var query = require(current_file_path)[type];
-  queryFunctions.run_query(conn, query, cb);
+  queryFunctions.run_query(conn, query, function() {
+    // If migration is rolling back
+    if (type === 'down') {
+      var timestamp = file.split('_')[0];
+      // Delete timestamp from table for ability run this migration in the future
+      queryFunctions.run_query(conn, "DELETE FROM " + table + " WHERE timestamp = '" + timestamp + "'", cb);
+    } else {
+      cb();
+    }
+  });
 }
 
 module.exports = {
