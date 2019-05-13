@@ -27,11 +27,12 @@ var mysql = require('mysql');
 var migration = require('mysql-migrations');
 
 var connection = mysql.createPool({
-  connectionLimit : 10,
-  host     : 'localhost',
-  user     : 'root',
-  password : 'password',
-  database : 'your_database'
+    connectionLimit : 10,
+    host     : process.env.DBHost || 'localhost',
+    user     : process.env.DBUser || 'root',
+    password : process.env.DBPass || 'password',
+    database : process.env.DBName || 'your_database',
+    multipleStatements: true
 });
 
 migration.init(connection, __dirname + '/migrations');
