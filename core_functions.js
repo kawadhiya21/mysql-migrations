@@ -34,7 +34,7 @@ function add_migration(argv, path, cb) {
 function up_migrations(conn, max_count, path, cb) {
   queryFunctions.run_query(conn, "SELECT timestamp FROM " + table, function (results) {
     var file_paths = [];
-    var timestamps = results.map(r => r.timestamp);
+    var timestamps = results.map(r => parseInt(r.timestamp));
 
     fileFunctions.readFolder(path, function (files) {
       files.forEach(function (file) {
