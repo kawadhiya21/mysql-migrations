@@ -21,8 +21,10 @@ function execute_query(conn, path, final_file_paths, type, cb) {
   if (final_file_paths.length) {
     var file_name = final_file_paths.shift()['file_path'];
     var current_file_path = path + "/" + file_name;
-
+    
     var queries = require(current_file_path);
+    console.info(`${type.toUpperCase()}: "${ queries[type] }"`);
+
     var timestamp_val = file_name.split("_", 1)[0];
     if (typeof(queries[type]) == 'string') {
       run_query(conn, queries[type], function (res) {
@@ -31,6 +33,8 @@ function execute_query(conn, path, final_file_paths, type, cb) {
         });
       });
     } else if (typeof(queries[type]) == 'function') {
+      console.info(`${type.toUpperCase()} Function: "${ queries[type].toString() }"`);
+
       queries[type](conn, function() {
         updateRecords(conn, type, table, timestamp_val, function () {
           execute_query(conn, path, final_file_paths, type, cb);
@@ -39,6 +43,7 @@ function execute_query(conn, path, final_file_paths, type, cb) {
     }
 
   } else {
+    console.info(`No more "${type.toUpperCase()}" migrations to run`);
     cb();
   }
 }
