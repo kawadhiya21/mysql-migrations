@@ -1,6 +1,6 @@
 {
   "name": "mysql-migrations",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A tool to use with mysql package to maintain migrations",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,9 @@
     "url": "https://github.com/kawadhiya21/mysql-migrations/issues"
   },
   "homepage": "https://github.com/kawadhiya21/mysql-migrations#readme",
-  "dependencies": {},
+  "dependencies": {
+    "colors": "^1.4.0"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.2.0",

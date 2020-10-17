@@ -1,37 +1,50 @@
 var table = require('./config')['table'];
 var fileFunctions  = require('./file');
+var colors = require('colors');
 
-function run_query(conn, query, cb) {
-  conn.getConnection(function(err, connection) {
-    if (err) {
-      throw err;
-    }
+function run_query(conn, query, cb, run) {
+  if (run == null) {
+    run = true;
+  }
 
-    connection.query(query, function (error, results, fields) {
-      connection.release();
-      if (error) {
-        throw error;
+  if (run) {
+    conn.getConnection(function(err, connection) {
+      if (err) {
+        throw err;
       }
-      cb(results);
+
+      connection.query(query, function (error, results, fields) {
+        connection.release();
+        if (error) {
+          throw error;
+        }
+        cb(results);
+      });
     });
-  });
+  } else {
+    cb({});
+  }
 }
 
-function execute_query(conn, path, final_file_paths, type, cb) {
+function execute_query(conn, path, final_file_paths, type, cb, run) {
+  if (run == null) {
+    run = true;
+  }
+
   if (final_file_paths.length) {
     var file_name = final_file_paths.shift()['file_path'];
     var current_file_path = path + "/" + file_name;
     
     var queries = require(current_file_path);
-    console.info(`${type.toUpperCase()}: "${ queries[type] }"`);
+    console.info(colors.green("Run: " + run + " Type: " + type.toUpperCase() + ": " +queries[type]));
 
     var timestamp_val = file_name.split("_", 1)[0];
     if (typeof(queries[type]) == 'string') {
       run_query(conn, queries[type], function (res) {
         updateRecords(conn, type, table, timestamp_val, function () {
-          execute_query(conn, path, final_file_paths, type, cb);
+          execute_query(conn, path, final_file_paths, type, cb, run);
         });
-      });
+      }, run);
     } else if (typeof(queries[type]) == 'function') {
       console.info(`${type.toUpperCase()} Function: "${ queries[type].toString() }"`);
 
@@ -43,7 +56,7 @@ function execute_query(conn, path, final_file_paths, type, cb) {
     }
 
   } else {
-    console.info(`No more "${type.toUpperCase()}" migrations to run`);
+    console.info(colors.blue("No more " + type.toUpperCase() + " migrations to run"));
     cb();
   }
 }

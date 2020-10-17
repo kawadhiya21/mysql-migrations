@@ -13,6 +13,10 @@ function readFolder(path, cb) {
       throw err;
     }
 
+    var schemaPath = files.indexOf("schema.sql");
+    if (schemaPath > -1) {
+      files.splice(schemaPath, 1);
+    }
     cb(files);
   });
 }
