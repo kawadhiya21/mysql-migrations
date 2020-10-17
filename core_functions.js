@@ -32,19 +32,16 @@ function add_migration(argv, path, cb) {
 }
 
 function up_migrations(conn, max_count, path, cb) {
-  queryFunctions.run_query(conn, "SELECT timestamp FROM " + table + " ORDER BY timestamp DESC LIMIT 1", function (results) {
+  queryFunctions.run_query(conn, "SELECT timestamp FROM " + table, function (results) {
     var file_paths = [];
-    var max_timestamp = 0;
-    if (results.length) {
-      max_timestamp = results[0].timestamp;
-    }
+    var timestamps = results.map(r => parseInt(r.timestamp));
 
     fileFunctions.readFolder(path, function (files) {
       files.forEach(function (file) {
         var timestamp_split = file.split("_", 1);
         if (timestamp_split.length) {
           var timestamp = parseInt(timestamp_split[0]);
-          if (Number.isInteger(timestamp) && timestamp.toString().length == 13 && timestamp > max_timestamp) {
+          if (Number.isInteger(timestamp) && timestamp.toString().length == 13 && !timestamps.includes(timestamp)) {
             file_paths.push({ timestamp : timestamp, file_path : file});
           }
         } else {
