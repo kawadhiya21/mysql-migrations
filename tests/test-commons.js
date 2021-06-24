@@ -12,7 +12,7 @@ const deleteFolderRecursive = path => {
   } else {
     fs.mkdirSync(path);
   }
-}
+};
 
 module.exports = cb => {
   mysql.getConnection((err, connection) => {
@@ -38,4 +38,4 @@ module.exports = cb => {
       });
     });
   });
-}
+};
