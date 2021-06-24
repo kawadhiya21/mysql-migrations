@@ -1,3 +1,6 @@
+.idea
+.vscode
+
 migrations/*
 node_modules/*
 test/mysql.js
