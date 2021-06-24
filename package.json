@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fastnorth/mysql-migrations.git"
+    "url": "git@github.com:fastnorth/mysql-migrations.git"
   },
   "keywords": [
     "node",
