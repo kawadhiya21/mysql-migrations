@@ -1,4 +1,5 @@
-migrations/*
+.idea
+.vscode
+
+tests/migrations/*
 node_modules/*
-test/mysql.js
-migration.js

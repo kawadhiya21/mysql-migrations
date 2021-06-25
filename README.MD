@@ -23,10 +23,10 @@ npm install mysql-migrations
 
 ```
 # migration.js
-var mysql = require('mysql');
-var migration = require('mysql-migrations');
+const mysql = require('mysql');
+const migration = require('mysql-migrations');
 
-var connection = mysql.createPool({
+const connection = mysql.createPool({
   connectionLimit : 10,
   host     : 'localhost',
   user     : 'root',
@@ -38,14 +38,16 @@ migration.init(connection, __dirname + '/migrations');
 ```
 
 ### Advanced Setup
-If you want to execute something at the end of any migration, you can add third parameter as callback function. Example:
+If you want to execute something at the end of any migration, you can add third parameter as callback function.
+You can also define custom logger as fifth parameter. Logger is an object with two methods: `info` and `error`.
+Example:
 
 ```
 # migration.js
-var mysql = require('mysql');
-var migration = require('mysql-migrations');
+const mysql = require('mysql');
+const migration = require('mysql-migrations');
 
-var connection = mysql.createPool({
+const connection = mysql.createPool({
   connectionLimit : 10,
   host     : 'localhost',
   user     : 'root',
@@ -53,8 +55,12 @@ var connection = mysql.createPool({
   database : 'your_database'
 });
 
-migration.init(connection, __dirname + '/migrations', function() {
-  console.log("finished running migrations");
+migration.init(
+    connection,
+    __dirname + '/migrations',
+    () => console.log('finished running migrations'),
+    [],
+    { info: msg => console.log(msg), error: msg => consol.error(msg) },
 });
 ```
 
@@ -156,8 +162,8 @@ node migration.js up --migrate-all
 2. For all runs, you can configure in the init part itself.
 ```
 # migration.js
-var mysql = require('mysql');
-var migration = require('mysql-migrations');
+const mysql = require('mysql');
+const migration = require('mysql-migrations');
 
 var connection = mysql.createPool({
   connectionLimit : 10,
@@ -167,7 +173,7 @@ var connection = mysql.createPool({
   database : 'your_database'
 });
 
-migration.init(connection, __dirname + '/migrations', function() {}, ["--migrate-all"]);
+migration.init(connection, __dirname + '/migrations', () => {}, ['--migrate-all']);
 ```
 and then run migrations normally
 
@@ -216,8 +222,11 @@ node migration.js load-from-schema
 
 The above command will create all the tables and make entry in the logs table. It is helpful when setting up projects for newbies or environments without running entire migration process.
 
-## Pending
->>Test cases: Will pick up when I get time.
+## Tests
+Tests require mysql server:
+```
+docker run -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=test_mig -p 3306:3306 -d mysql:5
+```
 
 ## Help and Support
 Will be more than happy to improve upon this version. This is an over night build and needs to be improved certainly. Will welcome everyone who wants to contribute.
