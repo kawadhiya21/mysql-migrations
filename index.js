@@ -108,14 +108,10 @@ const updateSchemaAndEnd = (conn, path) => new Promise(resolve => {
   const coreFunctions = require('./lib/core-functions');
 
   if (updateSchema) {
-    coreFunctions.updateSchema(conn, path, () => {
-      conn.end();
-      return resolve();
-    });
-  } else {
-    conn.end();
-    return resolve();
+    return coreFunctions.updateSchema(conn, path, () => resolve());
   }
+
+  return resolve();
 });
 
 module.exports = {
