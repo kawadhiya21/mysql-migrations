@@ -1,6 +1,6 @@
 {
   "name": "@fastnorth/mysql-migrations",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A tool to use with mysql package to maintain migrations",
   "main": "index.js",
   "scripts": {
